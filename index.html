@@ -35,11 +35,23 @@
     }
     .response {
       margin-bottom: 0.5rem;
-    }
-    .correct {
-      background-color: #d4edda;
+      background-color: #eee;
       padding: 0.5rem;
       border-radius: 6px;
+      cursor: pointer;
+    }
+    .response.correct {
+      background-color: #d4edda;
+    }
+    .response.incorrect {
+      background-color: #f8d7da;
+    }
+    .feedback {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+    .art-img {
+      display: none;
     }
     .answer-key {
       background: #fff3cd;
@@ -48,11 +60,16 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
       margin-top: 3rem;
     }
-    .art-img {
-      max-width: 100%;
+    .flashcard {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       margin: 1rem 0;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      padding: 1rem;
+      cursor: pointer;
+    }
+    .flashcard .back {
+      display: none;
     }
   </style>
 </head>
@@ -63,62 +80,72 @@
     <h2>Bernini's David</h2>
     <div class="question-title">What Italian Baroque characteristic does David by Gianlorenzo Bernini exhibit?</div>
     <div class="artwork">David, sculpture by Gian Lorenzo Bernini, showing David in the act of throwing stone</div>
-    <img class="art-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Gian_Lorenzo_Bernini%2C_David%2C_1623-24%2C_Galleria_Borghese%2C_Rome.jpg/800px-Gian_Lorenzo_Bernini%2C_David%2C_1623-24%2C_Galleria_Borghese%2C_Rome.jpg" alt="Bernini's David">
-    <div class="response correct">✔ The sculpture engages the viewer by breaking into the viewer's space.</div>
-    <div class="response">The sculpture makes a complete departure from Classical and Renaissance sculpture.</div>
-    <div class="response">The sculpture's main purpose was to idealize the beauty of the human form.</div>
-    <div class="response">The sculpture's pose and facial features are calm and reserved.</div>
+    <div class="response" onclick="checkAnswer(this, true)">The sculpture engages the viewer by breaking into the viewer's space.</div>
+    <div class="response" onclick="checkAnswer(this, false)">The sculpture makes a complete departure from Classical and Renaissance sculpture.</div>
+    <div class="response" onclick="checkAnswer(this, false)">The sculpture's main purpose was to idealize the beauty of the human form.</div>
+    <div class="response" onclick="checkAnswer(this, false)">The sculpture's pose and facial features are calm and reserved.</div>
   </div>
 
   <div class="question-block">
     <h2>Caravaggio's Style</h2>
     <div class="question-title">Which is an accurate statement about Italian Baroque artist Caravaggio's approach to painting?</div>
     <div class="artwork">Calling of Saint Matthew by Michelangelo Merisi da Caravaggio</div>
-    <img class="art-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Caravaggio_%E2%80%93_The_Calling_of_Saint_Matthew.jpg/800px-Caravaggio_%E2%80%93_The_Calling_of_Saint_Matthew.jpg" alt="Calling of Saint Matthew">
-    <div class="response correct">✔ Caravaggio created dramatic compositions that focus on realism.</div>
-    <div class="response">Caravaggio focused on depicting narrative historical themes.</div>
-    <div class="response">Caravaggio painted religious scenes with idealized figures.</div>
-    <div class="response">Caravaggio used foreshortening to depict a sense of flattened space.</div>
+    <div class="response" onclick="checkAnswer(this, true)">Caravaggio created dramatic compositions that focus on realism.</div>
+    <div class="response" onclick="checkAnswer(this, false)">Caravaggio focused on depicting narrative historical themes.</div>
+    <div class="response" onclick="checkAnswer(this, false)">Caravaggio painted religious scenes with idealized figures.</div>
+    <div class="response" onclick="checkAnswer(this, false)">Caravaggio used foreshortening to depict a sense of flattened space.</div>
   </div>
 
   <div class="question-block">
     <h2>Lighting Techniques</h2>
     <div class="question-title">What innovative and extreme lighting technique did Italian Baroque artist Caravaggio use in his paintings?</div>
     <div class="artwork">The Conversion of Saint Paul by Caravaggio</div>
-    <img class="art-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Conversion_on_the_Way_to_Damascus-Caravaggio_%28c.1600-1%29.jpg/800px-Conversion_on_the_Way_to_Damascus-Caravaggio_%28c.1600-1%29.jpg" alt="Conversion of Saint Paul">
-    <div class="response correct">✔ Tenebrism</div>
-    <div class="response">Contrapposto</div>
-    <div class="response">Atmospheric perspective</div>
-    <div class="response">Foreshortening</div>
+    <div class="response" onclick="checkAnswer(this, true)">Tenebrism</div>
+    <div class="response" onclick="checkAnswer(this, false)">Contrapposto</div>
+    <div class="response" onclick="checkAnswer(this, false)">Atmospheric perspective</div>
+    <div class="response" onclick="checkAnswer(this, false)">Foreshortening</div>
   </div>
 
   <div class="question-block">
     <h2>Poussin's Painting Traits</h2>
     <div class="question-title">Which phrase best describes a characteristic of the paintings of French Baroque artist Nicolas Poussin?</div>
     <div class="artwork">Landscape with the Burial of Phocion by Nicolas Poussin</div>
-    <img class="art-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Nicolas_Poussin_-_The_Burial_of_Phocion_-_WGA18175.jpg/800px-Nicolas_Poussin_-_The_Burial_of_Phocion_-_WGA18175.jpg" alt="Burial of Phocion">
-    <div class="response correct">✔ The depiction of a narrative subject within an organized, idealized landscape</div>
-    <div class="response">The depiction of figures and landscapes from the artist's imagination</div>
-    <div class="response">The rejection of Classical Greek and Roman figurative and landscape ideals</div>
-    <div class="response">The nearly photographic recording of figures within a landscape</div>
+    <div class="response" onclick="checkAnswer(this, true)">The depiction of a narrative subject within an organized, idealized landscape</div>
+    <div class="response" onclick="checkAnswer(this, false)">The depiction of figures and landscapes from the artist's imagination</div>
+    <div class="response" onclick="checkAnswer(this, false)">The rejection of Classical Greek and Roman figurative and landscape ideals</div>
+    <div class="response" onclick="checkAnswer(this, false)">The nearly photographic recording of figures within a landscape</div>
   </div>
 
   <div class="question-block">
     <h2>Elements of Art</h2>
     <div class="question-title">Which of the following is NOT considered one of the Elements of Art?</div>
-    <div class="response">Line</div>
-    <div class="response">Shape</div>
-    <div class="response correct">✔ Emotion</div>
-    <div class="response">Texture</div>
+    <div class="response" onclick="checkAnswer(this, false)">Line</div>
+    <div class="response" onclick="checkAnswer(this, false)">Shape</div>
+    <div class="response" onclick="checkAnswer(this, true)">Emotion</div>
+    <div class="response" onclick="checkAnswer(this, false)">Texture</div>
   </div>
 
   <div class="question-block">
     <h2>Elements of Art Review</h2>
     <div class="question-title">Which of these is an Element of Art concerned with how light or dark something is?</div>
-    <div class="response">Space</div>
-    <div class="response">Form</div>
-    <div class="response correct">✔ Value</div>
-    <div class="response">Color</div>
+    <div class="response" onclick="checkAnswer(this, false)">Space</div>
+    <div class="response" onclick="checkAnswer(this, false)">Form</div>
+    <div class="response" onclick="checkAnswer(this, true)">Value</div>
+    <div class="response" onclick="checkAnswer(this, false)">Color</div>
+  </div>
+
+  <h2>Flashcards Review</h2>
+  <div class="flashcard" onclick="flipCard(this)">
+    <div class="front">What is Tenebrism?</div>
+    <div class="back">A dramatic lighting technique using strong contrast between light and dark.</div>
+  </div>
+  <div class="flashcard" onclick="flipCard(this)">
+    <div class="front">Who created the sculpture of David in the Baroque period?</div>
+    <div class="back">Gianlorenzo Bernini</div>
+  </div>
+  <div class="flashcard" onclick="flipCard(this)">
+    <div class="front">Which element of art deals with the lightness or darkness of a color?</div>
+    <div class="back">Value</div>
   </div>
 
   <div class="answer-key">
@@ -132,5 +159,28 @@
       <li><strong>Value Definition:</strong> Value refers to how light or dark something is</li>
     </ul>
   </div>
+
+  <script>
+    function checkAnswer(el, isCorrect) {
+      if (el.classList.contains("correct") || el.classList.contains("incorrect")) return;
+      el.classList.add(isCorrect ? "correct" : "incorrect");
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.textContent = isCorrect ? "✅ Correct!" : "❌ Try again.";
+      el.appendChild(feedback);
+    }
+
+    function flipCard(card) {
+      const front = card.querySelector(".front");
+      const back = card.querySelector(".back");
+      if (back.style.display === "block") {
+        back.style.display = "none";
+        front.style.display = "block";
+      } else {
+        back.style.display = "block";
+        front.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>
