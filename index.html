@@ -2,27 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Baroque & Beyond - Study Guide</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Open+Sans&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baroque & Beyond - Interactive Study Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Open+Sans&display=swap" rel="stylesheet" />
   <style>
+    /* General Styles */
     body {
       font-family: 'Open Sans', sans-serif;
       background: #f4f4f9;
       color: #333;
       margin: 0;
       padding: 2rem;
+      user-select: none;
+      overflow-x: hidden;
     }
     h1, h2 {
       font-family: 'Playfair Display', serif;
       color: #2b2b52;
+      margin-bottom: 1rem;
     }
-    .question-block {
-      background: #ffffff;
+    .question-block, .matching-block, .flashcard {
+      background: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       margin-bottom: 2rem;
       padding: 1.5rem;
+      max-width: 700px;
     }
     .question-title {
       font-weight: bold;
@@ -34,153 +39,486 @@
       margin-bottom: 1rem;
     }
     .response {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.7rem;
       background-color: #eee;
-      padding: 0.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .response:hover {
+      background-color: #d0d7f9;
     }
     .response.correct {
-      background-color: #d4edda;
+      background-color: #d4edda !important;
+      border-left: 5px solid #28a745;
+      cursor: default;
     }
     .response.incorrect {
-      background-color: #f8d7da;
+      background-color: #f8d7da !important;
+      border-left: 5px solid #dc3545;
     }
     .feedback {
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
       font-size: 0.9rem;
+      font-weight: 600;
     }
-    .art-img {
-      display: none;
+    /* Flashcards */
+    .flashcard {
+      cursor: pointer;
+      perspective: 1000px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0;
+      user-select: none;
     }
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100px;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-radius: 12px;
+      background: white;
+    }
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      padding: 1rem;
+      border-radius: 12px;
+      user-select: none;
+    }
+    .flashcard-front {
+      background: #6c63ff;
+      color: white;
+      font-weight: 700;
+    }
+    .flashcard-back {
+      background: #f0f0f0;
+      color: #333;
+      transform: rotateY(180deg);
+      font-weight: 600;
+    }
+    /* Matching Game */
+    .matching-block {
+      max-width: 800px;
+    }
+    .match-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .match-list {
+      flex: 1 1 45%;
+      background: #f9f9ff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: inset 0 0 6px #bbb;
+      user-select: none;
+    }
+    .match-list h3 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+      color: #2b2b52;
+    }
+    .match-item {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      margin-bottom: 0.7rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .match-item:hover {
+      background-color: #d0d7f9;
+    }
+    .match-item.selected {
+      background-color: #6c63ff;
+      color: white;
+      cursor: default;
+    }
+    .match-result {
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    /* Mouse Trail */
+    .trail-dot {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      width: 10px;
+      height: 10px;
+      opacity: 0.7;
+      animation: fadeout 1s forwards;
+      mix-blend-mode: screen;
+    }
+    @keyframes fadeout {
+      0% {opacity: 0.7; transform: scale(1);}
+      100% {opacity: 0; transform: scale(2);}
+    }
+    /* Answer Key */
     .answer-key {
       background: #fff3cd;
-      padding: 1rem;
+      padding: 1.5rem;
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      margin-top: 3rem;
+      max-width: 700px;
+      margin: 2rem auto 4rem;
+      font-size: 1rem;
+      line-height: 1.5;
     }
-    .flashcard {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      margin: 1rem 0;
-      padding: 1rem;
-      cursor: pointer;
-    }
-    .flashcard .back {
-      display: none;
+    .answer-key h2 {
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <h1>Baroque & Beyond: Art History Study Guide</h1>
+  <h1>Baroque & Beyond: Interactive Art History Study Guide</h1>
 
-  <div class="question-block">
-    <h2>Bernini's David</h2>
-    <div class="question-title">What Italian Baroque characteristic does David by Gianlorenzo Bernini exhibit?</div>
-    <div class="artwork">David, sculpture by Gian Lorenzo Bernini, showing David in the act of throwing stone</div>
-    <div class="response" onclick="checkAnswer(this, true)">The sculpture engages the viewer by breaking into the viewer's space.</div>
-    <div class="response" onclick="checkAnswer(this, false)">The sculpture makes a complete departure from Classical and Renaissance sculpture.</div>
-    <div class="response" onclick="checkAnswer(this, false)">The sculpture's main purpose was to idealize the beauty of the human form.</div>
-    <div class="response" onclick="checkAnswer(this, false)">The sculpture's pose and facial features are calm and reserved.</div>
-  </div>
+  <!-- Multiple Choice Questions -->
+  <section id="multiple-choice">
 
-  <div class="question-block">
-    <h2>Caravaggio's Style</h2>
-    <div class="question-title">Which is an accurate statement about Italian Baroque artist Caravaggio's approach to painting?</div>
-    <div class="artwork">Calling of Saint Matthew by Michelangelo Merisi da Caravaggio</div>
-    <div class="response" onclick="checkAnswer(this, true)">Caravaggio created dramatic compositions that focus on realism.</div>
-    <div class="response" onclick="checkAnswer(this, false)">Caravaggio focused on depicting narrative historical themes.</div>
-    <div class="response" onclick="checkAnswer(this, false)">Caravaggio painted religious scenes with idealized figures.</div>
-    <div class="response" onclick="checkAnswer(this, false)">Caravaggio used foreshortening to depict a sense of flattened space.</div>
-  </div>
+    <div class="question-block">
+      <h2>Bernini's David</h2>
+      <div class="question-title">What Italian Baroque characteristic does David by Gianlorenzo Bernini exhibit?</div>
+      <div class="artwork">David, sculpture by Gian Lorenzo Bernini, showing David in the act of throwing stone</div>
+      <div class="response" onclick="checkAnswer(this, true)">The sculpture engages the viewer by breaking into the viewer's space.</div>
+      <div class="response" onclick="checkAnswer(this, false)">The sculpture makes a complete departure from Classical and Renaissance sculpture.</div>
+      <div class="response" onclick="checkAnswer(this, false)">The sculpture's main purpose was to idealize the beauty of the human form.</div>
+      <div class="response" onclick="checkAnswer(this, false)">The sculpture's pose and facial features are calm and reserved.</div>
+    </div>
 
-  <div class="question-block">
-    <h2>Lighting Techniques</h2>
-    <div class="question-title">What innovative and extreme lighting technique did Italian Baroque artist Caravaggio use in his paintings?</div>
-    <div class="artwork">The Conversion of Saint Paul by Caravaggio</div>
-    <div class="response" onclick="checkAnswer(this, true)">Tenebrism</div>
-    <div class="response" onclick="checkAnswer(this, false)">Contrapposto</div>
-    <div class="response" onclick="checkAnswer(this, false)">Atmospheric perspective</div>
-    <div class="response" onclick="checkAnswer(this, false)">Foreshortening</div>
-  </div>
+    <div class="question-block">
+      <h2>Caravaggio's Style</h2>
+      <div class="question-title">Which is an accurate statement about Italian Baroque artist Caravaggio's approach to painting?</div>
+      <div class="artwork">Calling of Saint Matthew by Michelangelo Merisi da Caravaggio</div>
+      <div class="response" onclick="checkAnswer(this, true)">Caravaggio created dramatic compositions that focus on realism.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Caravaggio focused on depicting narrative historical themes.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Caravaggio painted religious scenes with idealized figures.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Caravaggio used foreshortening to depict a sense of flattened space.</div>
+    </div>
 
-  <div class="question-block">
-    <h2>Poussin's Painting Traits</h2>
-    <div class="question-title">Which phrase best describes a characteristic of the paintings of French Baroque artist Nicolas Poussin?</div>
-    <div class="artwork">Landscape with the Burial of Phocion by Nicolas Poussin</div>
-    <div class="response" onclick="checkAnswer(this, true)">The depiction of a narrative subject within an organized, idealized landscape</div>
-    <div class="response" onclick="checkAnswer(this, false)">The depiction of figures and landscapes from the artist's imagination</div>
-    <div class="response" onclick="checkAnswer(this, false)">The rejection of Classical Greek and Roman figurative and landscape ideals</div>
-    <div class="response" onclick="checkAnswer(this, false)">The nearly photographic recording of figures within a landscape</div>
-  </div>
+    <div class="question-block">
+      <h2>Lighting Techniques</h2>
+      <div class="question-title">What innovative and extreme lighting technique did Italian Baroque artist Caravaggio use in his paintings?</div>
+      <div class="artwork">The Conversion of Saint Paul by Caravaggio</div>
+      <div class="response" onclick="checkAnswer(this, true)">Tenebrism</div>
+      <div class="response" onclick="checkAnswer(this, false)">Contrapposto</div>
+      <div class="response" onclick="checkAnswer(this, false)">Atmospheric perspective</div>
+      <div class="response" onclick="checkAnswer(this, false)">Foreshortening</div>
+    </div>
 
-  <div class="question-block">
-    <h2>Elements of Art</h2>
-    <div class="question-title">Which of the following is NOT considered one of the Elements of Art?</div>
-    <div class="response" onclick="checkAnswer(this, false)">Line</div>
-    <div class="response" onclick="checkAnswer(this, false)">Shape</div>
-    <div class="response" onclick="checkAnswer(this, true)">Emotion</div>
-    <div class="response" onclick="checkAnswer(this, false)">Texture</div>
-  </div>
+    <div class="question-block">
+      <h2>Poussin's Painting Traits</h2>
+      <div class="question-title">Which phrase best describes a characteristic of the paintings of French Baroque artist Nicolas Poussin?</div>
+      <div class="artwork">Landscape with the Burial of Phocion by Nicolas Poussin</div>
+      <div class="response" onclick="checkAnswer(this, true)">The depiction of a narrative subject within an organized, idealized landscape</div>
+      <div class="response" onclick="checkAnswer(this, false)">The depiction of figures and landscapes from the artist's imagination</div>
+      <div class="response" onclick="checkAnswer(this, false)">The rejection of Classical Greek and Roman figurative and landscape ideals</div>
+      <div class="response" onclick="checkAnswer(this, false)">The nearly photographic recording of figures within a landscape</div>
+    </div>
 
-  <div class="question-block">
-    <h2>Elements of Art Review</h2>
-    <div class="question-title">Which of these is an Element of Art concerned with how light or dark something is?</div>
-    <div class="response" onclick="checkAnswer(this, false)">Space</div>
-    <div class="response" onclick="checkAnswer(this, false)">Form</div>
-    <div class="response" onclick="checkAnswer(this, true)">Value</div>
-    <div class="response" onclick="checkAnswer(this, false)">Color</div>
-  </div>
+    <!-- Modernist Questions -->
+    <div class="question-block">
+      <h2>Notre-Dame-du-Haut by Le Corbusier</h2>
+      <div class="question-title">How does Notre-Dame-du-Haut by Le Corbusier exhibit sculptural qualities?</div>
+      <div class="artwork">Chapel of Notre Dame du Haut in Ronchamp, Franco-Swiss architecture by Le Corbusier</div>
+      <div class="response" onclick="checkAnswer(this, false)">It incorporates Le Corbusier's sculptures into niches in the chapel walls.</div>
+      <div class="response" onclick="checkAnswer(this, false)">It is designed with sinuous rock walls to surround the chapel.</div>
+      <div class="response" onclick="checkAnswer(this, false)">It uses right angles throughout the structure.</div>
+      <div class="response" onclick="checkAnswer(this, true)">It has an upswept roof shape formed by using sprayed concrete.</div>
+    </div>
 
-  <h2>Flashcards Review</h2>
-  <div class="flashcard" onclick="flipCard(this)">
-    <div class="front">What is Tenebrism?</div>
-    <div class="back">A dramatic lighting technique using strong contrast between light and dark.</div>
-  </div>
-  <div class="flashcard" onclick="flipCard(this)">
-    <div class="front">Who created the sculpture of David in the Baroque period?</div>
-    <div class="back">Gianlorenzo Bernini</div>
-  </div>
-  <div class="flashcard" onclick="flipCard(this)">
-    <div class="front">Which element of art deals with the lightness or darkness of a color?</div>
-    <div class="back">Value</div>
-  </div>
+    <div class="question-block">
+      <h2>Georges Pompidou Center</h2>
+      <div class="question-title">Why did Modernist architects Richard Rogers and Renzo Piano place the escalator outside the Georges Pompidou National Center of Art and Culture?</div>
+      <div class="artwork">Georges Pompidou Center, cultural center in Paris, France</div>
+      <div class="response" onclick="checkAnswer(this, true)">To make the interior space larger and to add an interesting design element.</div>
+      <div class="response" onclick="checkAnswer(this, false)">To help save on heating and cooling costs.</div>
+      <div class="response" onclick="checkAnswer(this, false)">To move people into and out of the building more quickly.</div>
+      <div class="response" onclick="checkAnswer(this, false)">To make the escalator easier to service.</div>
+    </div>
 
-  <div class="answer-key">
+    <div class="question-block">
+      <h2>Modigliani's Head of a Woman</h2>
+      <div class="question-title">Which of the following is a characteristic of Modernist sculptor Amedeo Modigliani's Head of a Woman?</div>
+      <div class="artwork">Head of a Woman, sculpture by Amedeo Modigliani</div>
+      <div class="response" onclick="checkAnswer(this, true)">The facial features are reduced to simple geometric shapes.</div>
+      <div class="response" onclick="checkAnswer(this, false)">The pyramid configuration organizes the composition.</div>
+      <div class="response" onclick="checkAnswer(this, false)">The detail markings on the head symbolize African folklore.</div>
+      <div class="response" onclick="checkAnswer(this, false)">The strong diagonals add dimension and movement to the sculpture.</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Henry Moore's Mother and Child</h2>
+      <div class="question-title">What Modernist convention is reflected in Henry Moore's sculpture Mother and Child?</div>
+      <div class="artwork">Mother and Child, sculpture by Henry Moore</div>
+      <div class="response" onclick="checkAnswer(this, true)">Moore uses abstracted, simplified, and exaggerated forms.</div>
+      <div class="response" onclick="checkAnswer(this, false)">The sculpture combines dramatic poses with calm facial expressions.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Mother and Child demonstrates the influence of realistic nineteenth-century sculpture.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Moore used bronze for the sculpture to emphasize strength.</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Jackson Pollock's Technique</h2>
+      <div class="question-title">How did American Abstract Expressionist painter Jackson Pollock apply paint to canvas?</div>
+      <div class="artwork">Autumn Rhythm (Number Thirty), painting by Jackson Pollock</div>
+      <div class="response" onclick="checkAnswer(this, true)">Pollock used sticks and brushes to drip and splatter paint on canvas that was on the floor.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Pollock used carefully placed brushstrokes to create the illusion of motion on the canvas.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Pollock stapled a large piece of canvas to the wall and flung paint by using the full motion of his arm.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Pollock used soft sponges and housepainting brushes to apply diluted oil paint and watercolor.</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Willem de Kooning's Approach</h2>
+      <div class="question-title">What was Abstract Expressionist Willem de Kooning's approach to painting?</div>
+      <div class="artwork">Woman One, painting by Willem de Kooning</div>
+      <div class="response" onclick="checkAnswer(this, true)">De Kooning used aggressive gestures to apply slashing lines in all directions.</div>
+      <div class="response" onclick="checkAnswer(this, false)">De Kooning completed his works in one session, rarely adding to or changing an image.</div>
+      <div class="response" onclick="checkAnswer(this, false)">De Kooning carefully planned compositions in a sketchbook, before beginning a painting.</div>
+      <div class="response" onclick="checkAnswer(this, false)">De Kooning avoided the use of black paint, to enhance his bold, saturated color palette.</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Robert Rauschenberg's Estate</h2>
+      <div class="question-title">How did Postmodernist Robert Rauschenberg convey the energy and chaos of modern city life in Estate?</div>
+      <div class="artwork">Estate, painting by Robert Rauschenberg</div>
+      <div class="response" onclick="checkAnswer(this, true)">Rauschenberg included vigorous and uneven brushstrokes, and repeated and tilted images throughout the composition.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Rauschenberg avoided repeating the same image more than once, and used a monochromatic color palette.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Rauschenberg included lots of black, and meticulously and methodically planned out each composition.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Rauschenberg included unsettling images laden with religious and historical symbolism.</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Estate Subject Matter</h2>
+      <div class="question-title">Which best describes the subject matter in Postmodernist Robert Rauschenberg's Estate?</div>
+      <div class="artwork">Estate, painting by Robert Rauschenberg</div>
+      <div class="response" onclick="checkAnswer(this, true)">Estate features images of American popular culture that the general public would recognize.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Estate depicts a nonrepresentational scene without recognizable subject matter.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Estate includes images that convey depressing aspects of modern urban environments.</div>
+      <div class="response" onclick="checkAnswer(this, false)">Estate's images are meaningful only to people who live in New York City.</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Similarity of Moore & Modigliani</h2>
+      <div class="question-title">Which of the following best describes a similarity between the approaches to sculpture of Henry Moore and Amedeo Modigliani?</div>
+      <div class="artwork">Mother and Child by Henry Moore and Head of a Woman by Amedeo Modigliani</div>
+      <div class="response" onclick="checkAnswer(this, true)">They both simplified and abstracted elements of the human form.</div>
+      <div class="response" onclick="checkAnswer(this, false)">They both modeled figures in clay and then cast them in bronze.</div>
+      <div class="response" onclick="checkAnswer(this, false)">They both created strong contrasts between solids and voids.</div>
+      <div class="response" onclick="checkAnswer(this, false)">They both incorporated Classical conventions into their work.</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Elements of Art</h2>
+      <div class="question-title">Which of the following is NOT considered one of the Elements of Art?</div>
+      <div class="response" onclick="checkAnswer(this, false)">Line</div>
+      <div class="response" onclick="checkAnswer(this, false)">Shape</div>
+      <div class="response" onclick="checkAnswer(this, true)">Emotion</div>
+      <div class="response" onclick="checkAnswer(this, false)">Texture</div>
+    </div>
+
+    <div class="question-block">
+      <h2>Elements of Art Review</h2>
+      <div class="question-title">Which of these is an Element of Art concerned with how light or dark something is?</div>
+      <div class="response" onclick="checkAnswer(this, false)">Space</div>
+      <div class="response" onclick="checkAnswer(this, false)">Form</div>
+      <div class="response" onclick="checkAnswer(this, true)">Value</div>
+      <div class="response" onclick="checkAnswer(this, false)">Color</div>
+    </div>
+
+  </section>
+
+  <!-- Matching Game -->
+  <section class="matching-block">
+    <h2>Matching: Match the Artist/Term with its Description</h2>
+    <p>Click one item from the left column, then click the matching description on the right.</p>
+    <div class="match-container">
+      <div class="match-list" id="match-left">
+        <h3>Artist/Term</h3>
+        <div class="match-item" onclick="selectMatch(this, 'bernini')">Bernini</div>
+        <div class="match-item" onclick="selectMatch(this, 'caravaggio')">Caravaggio</div>
+        <div class="match-item" onclick="selectMatch(this, 'tenebrism')">Tenebrism</div>
+        <div class="match-item" onclick="selectMatch(this, 'moore')">Henry Moore</div>
+        <div class="match-item" onclick="selectMatch(this, 'modigliani')">Modigliani</div>
+        <div class="match-item" onclick="selectMatch(this, 'value')">Value (Element of Art)</div>
+      </div>
+      <div class="match-list" id="match-right">
+        <h3>Description</h3>
+        <div class="match-item" onclick="selectMatch(this, 'bernini')">Baroque sculptor famous for dynamic, engaging sculptures like David.</div>
+        <div class="match-item" onclick="selectMatch(this, 'tenebrism')">Extreme contrast between light and dark in painting.</div>
+        <div class="match-item" onclick="selectMatch(this, 'value')">How light or dark a color or object appears in art.</div>
+        <div class="match-item" onclick="selectMatch(this, 'caravaggio')">Painter known for realistic, dramatic lighting and compositions.</div>
+        <div class="match-item" onclick="selectMatch(this, 'modigliani')">Sculptor known for abstracting facial features into geometric shapes.</div>
+        <div class="match-item" onclick="selectMatch(this, 'moore')">Modernist sculptor who used simplified, abstracted forms, especially in mother and child themes.</div>
+      </div>
+    </div>
+    <div class="match-result" id="match-result"></div>
+  </section>
+
+  <!-- Flashcards -->
+  <section id="flashcards">
+    <h2>Flashcards Review</h2>
+    <div class="flashcard" onclick="flipCard(this)">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">What is Tenebrism?</div>
+        <div class="flashcard-back">A dramatic lighting technique using strong contrast between light and dark.</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="flipCard(this)">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Who created the sculpture of David in the Baroque period?</div>
+        <div class="flashcard-back">Gianlorenzo Bernini</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="flipCard(this)">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Which element of art deals with the lightness or darkness of a color?</div>
+        <div class="flashcard-back">Value</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Answer Key -->
+  <section class="answer-key" id="answer-key">
     <h2>Answer Key</h2>
     <ul>
       <li><strong>Bernini's David:</strong> The sculpture engages the viewer by breaking into the viewer's space.</li>
       <li><strong>Caravaggio's Style:</strong> Caravaggio created dramatic compositions that focus on realism.</li>
       <li><strong>Lighting Technique:</strong> Tenebrism</li>
       <li><strong>Poussin's Trait:</strong> The depiction of a narrative subject within an organized, idealized landscape</li>
-      <li><strong>Elements of Art (Not Included):</strong> Emotion</li>
-      <li><strong>Value Definition:</strong> Value refers to how light or dark something is</li>
+      <li><strong>Notre-Dame-du-Haut:</strong> It has an upswept roof shape formed by using sprayed concrete.</li>
+      <li><strong>Georges Pompidou Center:</strong> To make the interior space larger and to add an interesting design element.</li>
+      <li><strong>Modigliani's Head of a Woman:</strong> The facial features are reduced to simple geometric shapes.</li>
+      <li><strong>Henry Moore's Mother and Child:</strong> Moore uses abstracted, simplified, and exaggerated forms.</li>
+      <li><strong>Jackson Pollock's Technique:</strong> Pollock used sticks and brushes to drip and splatter paint on canvas on the floor.</li>
+      <li><strong>Willem de Kooning's Approach:</strong> De Kooning used aggressive gestures to apply slashing lines in all directions.</li>
+      <li><strong>Robert Rauschenberg's Estate (Energy & Chaos):</strong> Included vigorous brushstrokes and repeated images.</li>
+      <li><strong>Estate Subject Matter:</strong> Features images of American popular culture recognized by the public.</li>
+      <li><strong>Similarity of Moore & Modigliani:</strong> Both simplified and abstracted elements of the human form.</li>
+      <li><strong>Elements of Art - NOT:</strong> Emotion</li>
+      <li><strong>Element of Art (Value):</strong> How light or dark something is.</li>
     </ul>
-  </div>
+  </section>
 
-  <script>
-    function checkAnswer(el, isCorrect) {
-      if (el.classList.contains("correct") || el.classList.contains("incorrect")) return;
-      el.classList.add(isCorrect ? "correct" : "incorrect");
-      const feedback = document.createElement("div");
-      feedback.className = "feedback";
-      feedback.textContent = isCorrect ? "✅ Correct!" : "❌ Try again.";
-      el.appendChild(feedback);
+<script>
+  // Multiple Choice Answer Checking
+  function checkAnswer(el, isCorrect) {
+    if (el.classList.contains('correct') || el.classList.contains('incorrect')) return; // prevent multiple clicks
+    if (isCorrect) {
+      el.classList.add('correct');
+      el.innerHTML += ' <span class="feedback">✅ Correct!</span>';
+      // disable siblings
+      const siblings = el.parentElement.querySelectorAll('.response');
+      siblings.forEach(sib => {
+        if (sib !== el) sib.style.pointerEvents = 'none';
+      });
+    } else {
+      el.classList.add('incorrect');
+      el.innerHTML += ' <span class="feedback">❌ Try again.</span>';
     }
+  }
 
-    function flipCard(card) {
-      const front = card.querySelector(".front");
-      const back = card.querySelector(".back");
-      if (back.style.display === "block") {
-        back.style.display = "none";
-        front.style.display = "block";
+  // Flashcard Flip
+  function flipCard(card) {
+    card.classList.toggle('flipped');
+  }
+
+  // Matching Game Logic
+  let selectedLeft = null;
+  let selectedRight = null;
+  const matches = {
+    'bernini': 'bernini',
+    'caravaggio': 'caravaggio',
+    'tenebrism': 'tenebrism',
+    'moore': 'moore',
+    'modigliani': 'modigliani',
+    'value': 'value'
+  };
+  let score = 0;
+  const totalMatches = Object.keys(matches).length;
+  const matchResult = document.getElementById('match-result');
+
+  function selectMatch(el, id) {
+    if (el.classList.contains('selected')) return; // already selected
+
+    const parentId = el.parentElement.id;
+
+    if (parentId === 'match-left') {
+      // If previously selected, remove highlight
+      if (selectedLeft) selectedLeft.classList.remove('selected');
+      selectedLeft = el;
+      el.classList.add('selected');
+    } else if (parentId === 'match-right') {
+      if (!selectedLeft) {
+        alert('Please select an item from the left column first.');
+        return;
+      }
+      if (selectedRight) selectedRight.classList.remove('selected');
+      selectedRight = el;
+      el.classList.add('selected');
+
+      // Check match
+      if (matches[selectedLeft.getAttribute('onclick').match(/'([^']+)'/)[1]] ===
+          selectedRight.getAttribute('onclick').match(/'([^']+)'/)[1]) {
+        // Correct match
+        selectedLeft.style.backgroundColor = '#d4edda';
+        selectedRight.style.backgroundColor = '#d4edda';
+        selectedLeft.style.pointerEvents = 'none';
+        selectedRight.style.pointerEvents = 'none';
+        score++;
+        matchResult.textContent = `Correct! Matches found: ${score} / ${totalMatches}`;
       } else {
-        back.style.display = "block";
-        front.style.display = "none";
+        // Incorrect match
+        selectedLeft.classList.add('incorrect');
+        selectedRight.classList.add('incorrect');
+        matchResult.textContent = 'Incorrect match, try again!';
+        setTimeout(() => {
+          selectedLeft.classList.remove('incorrect');
+          selectedRight.classList.remove('incorrect');
+          selectedLeft.classList.remove('selected');
+          selectedRight.classList.remove('selected');
+        }, 1000);
+      }
+      selectedLeft.classList.remove('selected');
+      selectedRight.classList.remove('selected');
+      selectedLeft = null;
+      selectedRight = null;
+
+      if (score === totalMatches) {
+        matchResult.textContent = '🎉 Congratulations! You matched all correctly.';
       }
     }
-  </script>
+  }
+
+  // Mouse trail animation
+  document.addEventListener('mousemove', e => {
+    const dot = document.createElement('div');
+    dot.className = 'trail-dot';
+    dot.style.left = e.pageX + 'px';
+    dot.style.top = e.pageY + 'px';
+    dot.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+    document.body.appendChild(dot);
+    setTimeout(() => {
+      dot.remove();
+    }, 1000);
+  });
+</script>
 </body>
 </html>
