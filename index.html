@@ -33,7 +33,6 @@
             --transition: all 0.3s ease;
         }
 
-        /* Skip link for accessibility */
         .skip-link {
             position: absolute;
             top: -40px;
@@ -50,7 +49,6 @@
             top: 6px;
         }
 
-        /* Base styles */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, var(--light-bg) 0%, #e0e7ff 50%, #fce7f3 100%);
@@ -61,7 +59,6 @@
             min-height: 100vh;
         }
 
-        /* Typography */
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
             color: var(--text-dark);
@@ -77,7 +74,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
         }
 
         h2 {
@@ -90,7 +86,6 @@
             color: var(--primary-dark);
         }
 
-        /* Layout */
         header {
             text-align: center;
             padding: 2rem 1rem;
@@ -102,7 +97,6 @@
             padding: 0 1rem 4rem;
         }
 
-        /* Print Button */
         .print-button {
             position: fixed;
             top: 20px;
@@ -134,7 +128,6 @@
             }
         }
 
-        /* Navigation */
         .nav-menu {
             list-style: none;
             padding: 0;
@@ -164,7 +157,6 @@
             transform: translateY(-2px);
         }
 
-        /* Glitter animation */
         #glitter-container {
             position: fixed;
             pointer-events: none;
@@ -198,7 +190,6 @@
             }
         }
 
-        /* Question blocks */
         .question-block {
             background: rgba(255, 255, 255, 0.9);
             border-radius: var(--border-radius);
@@ -235,7 +226,6 @@
             border-left: 4px solid var(--secondary-color);
         }
 
-        /* Response buttons */
         .responses {
             display: flex;
             flex-direction: column;
@@ -285,7 +275,6 @@
             font-weight: 700;
         }
 
-        /* Matching game */
         .matching-block {
             background: rgba(255, 255, 255, 0.9);
             border-radius: var(--border-radius);
@@ -355,7 +344,6 @@
             font-size: 1.1rem;
         }
 
-        /* Flashcards */
         #flashcards {
             max-width: 800px;
             margin: 0 auto;
@@ -432,7 +420,6 @@
             border: 2px solid var(--secondary-color);
         }
 
-        /* Answer key */
         .answer-key {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.1));
             padding: 2rem;
@@ -465,7 +452,6 @@
             color: #78350f;
         }
 
-        /* Enhanced Mouse trail */
         .trail-dot {
             position: fixed;
             border-radius: 50%;
@@ -493,7 +479,6 @@
             }
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .match-container {
                 grid-template-columns: 1fr;
@@ -530,13 +515,8 @@
     </style>
 </head>
 <body>
-    <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- Print Button -->
     <button class="print-button" onclick="window.print()">🖨️ Print Study Guide</button>
-    
-    <!-- Glitter container -->
     <div id="glitter-container" aria-hidden="true"></div>
 
     <header>
@@ -552,7 +532,6 @@
     </header>
 
     <main>
-        <!-- Multiple Choice Questions -->
         <section id="multiple-choice" aria-labelledby="mc-heading">
             <h2 id="mc-heading">Multiple Choice Questions</h2>
             
@@ -653,7 +632,6 @@
             </article>
         </section>
 
-        <!-- Matching Game -->
         <section id="matching-game" class="matching-block" aria-labelledby="matching-heading">
             <h2 id="matching-heading">Matching Game</h2>
             <p>Click one item from the left column, then click the matching description on the right.</p>
@@ -692,276 +670,6 @@
             <div class="match-result" id="match-result" aria-live="polite"></div>
         </section>
 
-        <!-- Flashcards -->
-        <section id="flashcards" aria-labelledby="flashcards-heading">
-            <h2 id="flashcards-heading">Flashcards Review</h2>
-            <p class="instructions">Click on each card to flip it and reveal the answer.</p>
-            
-            <div class="flashcard" onclick="flipCard(this)" onkeydown="handleCardKeydown(event, this)" tabindex="0" role="button" aria-label="Flashcard: What is Tenebrism?">
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">What is Tenebrism?</div>
-                    <div class="flashcard-back">
-                        A dramatic lighting technique using strong contrast between light and dark.
-                    </div>
-                </div>
-            </div>
-
-            <div class="flashcard" onclick="flipCard(this)" onkeydown="handleCardKeydown(event, this)" tabindex="0" role="button" aria-label="Flashcard: Who created the sculpture of David in the Baroque period?">
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">Who created the sculpture of David in the Baroque period?</div>
-                    <div class="flashcard-back">Gianlorenzo Bernini</div>
-                </div>
-            
-
-        
-        }
-
-        /* Answer key */
-        .answer-key {
-            background: rgba(255, 243, 205, 0.9);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-medium);
-            max-width: 800px;
-            margin: 3rem auto;
-            border: 2px solid var(--warning-color);
-        }
-
-        .answer-key h2 {
-            color: #997a00;
-            margin-bottom: 1.5rem;
-        }
-
-        .answer-key dl {
-            margin: 0;
-        }
-
-        .answer-key dt {
-            font-weight: 700;
-            color: #664d03;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .answer-key dd {
-            margin-left: 1rem;
-            margin-bottom: 1rem;
-            color: #664d03;
-        }
-
-        /* Mouse trail */
-        .trail-dot {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            width: 8px;
-            height: 8px;
-            opacity: 0.7;
-            animation: fadeout 1s forwards;
-            z-index: 999;
-        }
-
-        @keyframes fadeout {
-            0% {
-                opacity: 0.7;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(2);
-            }
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .match-container {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .nav-menu {
-                gap: 1rem;
-            }
-            
-            .question-block,
-            .matching-block {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-            
-            .flashcard {
-                height: 120px;
-                margin: 1.5rem auto;
-            }
-            
-            .flashcard-front,
-            .flashcard-back {
-                font-size: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- Glitter container -->
-    <div id="glitter-container" aria-hidden="true"></div>
-
-    <header>
-        <h1 id="main-content">Baroque & Beyond: Interactive Art History Study Guide</h1>
-        <nav aria-label="Study sections">
-            <ul class="nav-menu">
-                <li><a href="#multiple-choice">Multiple Choice</a></li>
-                <li><a href="#matching-game">Matching Game</a></li>
-                <li><a href="#flashcards">Flashcards</a></li>
-                <li><a href="#answer-key">Answer Key</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <!-- Multiple Choice Questions -->
-        <section id="multiple-choice" aria-labelledby="mc-heading">
-            <h2 id="mc-heading">Multiple Choice Questions</h2>
-            
-            <article class="question-block" data-question="1">
-                <h3>Bernini's David</h3>
-                <div class="question-title">What Italian Baroque characteristic does David by Gianlorenzo Bernini exhibit?</div>
-                <div class="artwork">David, sculpture by Gian Lorenzo Bernini, showing David in the act of throwing stone</div>
-                <div class="responses" role="radiogroup" aria-labelledby="q1-title">
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">The sculpture engages the viewer by breaking into the viewer's space.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The sculpture makes a complete departure from Classical and Renaissance sculpture.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The sculpture's main purpose was to idealize the beauty of the human form.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The sculpture's pose and facial features are calm and reserved.</button>
-                </div>
-            </article>
-
-            <article class="question-block" data-question="2">
-                <h3>Caravaggio's Style</h3>
-                <div class="question-title">Which is an accurate statement about Italian Baroque artist Caravaggio's approach to painting?</div>
-                <div class="artwork">Calling of Saint Matthew by Michelangelo Merisi da Caravaggio</div>
-                <div class="responses" role="radiogroup">
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">Caravaggio created dramatic compositions that focus on realism.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Caravaggio focused on depicting narrative historical themes.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Caravaggio painted religious scenes with idealized figures.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Caravaggio used foreshortening to depict a sense of flattened space.</button>
-                </div>
-            </article>
-
-            <article class="question-block" data-question="3">
-                <h3>Lighting Techniques</h3>
-                <div class="question-title">What innovative and extreme lighting technique did Italian Baroque artist Caravaggio use in his paintings?</div>
-                <div class="artwork">The Conversion of Saint Paul by Caravaggio</div>
-                <div class="responses" role="radiogroup">
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">Tenebrism</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Contrapposto</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Atmospheric perspective</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Foreshortening</button>
-                </div>
-            </article>
-
-            <article class="question-block" data-question="4">
-                <h3>Poussin's Painting Traits</h3>
-                <div class="question-title">Which phrase best describes a characteristic of the paintings of French Baroque artist Nicolas Poussin?</div>
-                <div class="artwork">Landscape with the Burial of Phocion by Nicolas Poussin</div>
-                <div class="responses" role="radiogroup">
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">The depiction of a narrative subject within an organized, idealized landscape</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The depiction of figures and landscapes from the artist's imagination</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The rejection of Classical Greek and Roman figurative and landscape ideals</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The nearly photographic recording of figures within a landscape</button>
-                </div>
-            </article>
-
-            <article class="question-block" data-question="5">
-                <h3>Notre-Dame-du-Haut by Le Corbusier</h3>
-                <div class="question-title">How does Notre-Dame-du-Haut by Le Corbusier exhibit sculptural qualities?</div>
-                <div class="artwork">Chapel of Notre Dame du Haut in Ronchamp, Franco-Swiss architecture by Le Corbusier</div>
-                <div class="responses" role="radiogroup">
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">It incorporates Le Corbusier's sculptures into niches in the chapel walls.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">It is designed with sinuous rock walls to surround the chapel.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">It uses right angles throughout the structure.</button>
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">It has an upswept roof shape formed by using sprayed concrete.</button>
-                </div>
-            </article>
-
-            <article class="question-block" data-question="6">
-                <h3>Georges Pompidou Center</h3>
-                <div class="question-title">Why did Modernist architects Richard Rogers and Renzo Piano place the escalator outside the Georges Pompidou National Center of Art and Culture?</div>
-                <div class="artwork">Georges Pompidou Center, cultural center in Paris, France</div>
-                <div class="responses" role="radiogroup">
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">To make the interior space larger and to add an interesting design element.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">To help save on heating and cooling costs.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">To move people into and out of the building more quickly.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">To make the escalator easier to service.</button>
-                </div>
-            </article>
-
-            <article class="question-block" data-question="7">
-                <h3>Modigliani's Head of a Woman</h3>
-                <div class="question-title">Which of the following is a characteristic of Modernist sculptor Amedeo Modigliani's Head of a Woman?</div>
-                <div class="artwork">Head of a Woman, sculpture by Amedeo Modigliani</div>
-                <div class="responses" role="radiogroup">
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">The facial features are reduced to simple geometric shapes.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The pyramid configuration organizes the composition.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The detail markings on the head symbolize African folklore.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">The strong diagonals add dimension and movement to the sculpture.</button>
-                </div>
-            </article>
-
-            <article class="question-block" data-question="8">
-                <h3>Henry Moore's Mother and Child</h3>
-                <div class="question-title">What Modernist convention is reflected in Henry Moore's sculpture Mother and Child?</div>
-                <div class="artwork">Mother and Child, sculpture by Henry Moore</div>
-                <div class="responses" role="radiogroup">
-                    <button class="response" data-correct="true" onclick="checkAnswer(this, true)">Moore uses abstracted, simplified, and exaggerated human forms.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Moore uses realistic proportions and detailed surface textures.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Moore incorporates Classical Greek and Roman ideals of beauty.</button>
-                    <button class="response" data-correct="false" onclick="checkAnswer(this, false)">Moore creates a sense of movement through contrapposto.</button>
-                </div>
-            </article>
-        </section>
-
-        <!-- Matching Game -->
-        <section id="matching-game" class="matching-block" aria-labelledby="matching-heading">
-            <h2 id="matching-heading">Matching Game</h2>
-            <p>Click one item from the left column, then click the matching description on the right.</p>
-            <div class="match-container">
-                <div class="match-list" id="match-left">
-                    <h3>Artist/Term</h3>
-                    <button class="match-item" data-match="bernini" onclick="selectMatch(this, 'bernini')">Bernini</button>
-                    <button class="match-item" data-match="caravaggio" onclick="selectMatch(this, 'caravaggio')">Caravaggio</button>
-                    <button class="match-item" data-match="tenebrism" onclick="selectMatch(this, 'tenebrism')">Tenebrism</button>
-                    <button class="match-item" data-match="moore" onclick="selectMatch(this, 'moore')">Henry Moore</button>
-                    <button class="match-item" data-match="modigliani" onclick="selectMatch(this, 'modigliani')">Modigliani</button>
-                    <button class="match-item" data-match="value" onclick="selectMatch(this, 'value')">Value (Element of Art)</button>
-                </div>
-                <div class="match-list" id="match-right">
-                    <h3>Description</h3>
-                    <button class="match-item" data-match="bernini" onclick="selectMatch(this, 'bernini')">
-                        Baroque sculptor famous for dynamic, engaging sculptures like David.
-                    </button>
-                    <button class="match-item" data-match="tenebrism" onclick="selectMatch(this, 'tenebrism')">
-                        Extreme contrast between light and dark in painting.
-                    </button>
-                    <button class="match-item" data-match="value" onclick="selectMatch(this, 'value')">
-                        How light or dark a color or object appears in art.
-                    </button>
-                    <button class="match-item" data-match="caravaggio" onclick="selectMatch(this, 'caravaggio')">
-                        Painter known for realistic, dramatic lighting and compositions.
-                    </button>
-                    <button class="match-item" data-match="modigliani" onclick="selectMatch(this, 'modigliani')">
-                        Sculptor known for abstracting facial features into geometric shapes.
-                    </button>
-                    <button class="match-item" data-match="moore" onclick="selectMatch(this, 'moore')">
-                        Modernist sculptor who used simplified, abstracted forms, especially in mother and child themes.
-                    </button>
-                </div>
-            </div>
-            <div class="match-result" id="match-result" aria-live="polite"></div>
-        </section>
-
-        <!-- Flashcards -->
         <section id="flashcards" aria-labelledby="flashcards-heading">
             <h2 id="flashcards-heading">Flashcards Review</h2>
             <p class="instructions">Click on each card to flip it and reveal the answer.</p>
@@ -1003,15 +711,28 @@
                 </div>
             </div>
 
-            <div class="flashcard" onclick="flipCard(this)" onkeydown="handleCardKeydown(event, this)" tabindex="0" role="button" aria-label="Flashcard: Robert Rauschenberg's Estate art movement">
+            <div class="flashcard" onclick="flipCard(this)" onkeydown="handleCardKeydown(event, this)" tabindex="0" role="button" aria-label="Flashcard: Baroque art characteristics">
                 <div class="flashcard-inner">
-                    <div class="flashcard-front">Which art movement does Robert Rauschenberg's "Estate" belong to?</div>
-                    <div class="flashcard-back">Postmodernism, featuring energetic brushstrokes and pop culture imagery.</div>
+                    <div class="flashcard-front">What are two key characteristics of Baroque art?</div>
+                    <div class="flashcard-back">Dramatic lighting effects and emotional intensity that engages the viewer.</div>
+                </div>
+            </div>
+
+            <div class="flashcard" onclick="flipCard(this)" onkeydown="handleCardKeydown(event, this)" tabindex="0" role="button" aria-label="Flashcard: Modernist art movement">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">What defines Modernist sculpture?</div>
+                    <div class="flashcard-back">Abstract, simplified forms that break away from traditional realistic representation.</div>
+                </div>
+            </div>
+
+            <div class="flashcard" onclick="flipCard(this)" onkeydown="handleCardKeydown(event, this)" tabindex="0" role="button" aria-label="Flashcard: Le Corbusier architecture">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">How does Le Corbusier's Notre-Dame-du-Haut show sculptural qualities?</div>
+                    <div class="flashcard-back">Through its upswept roof shape formed using sprayed concrete.</div>
                 </div>
             </div>
         </section>
 
-        <!-- Answer Key -->
         <section class="answer-key" id="answer-key" aria-labelledby="answer-key-heading">
             <h2 id="answer-key-heading">Answer Key</h2>
             <dl>
@@ -1043,11 +764,9 @@
     </main>
 
     <script>
-        // Multiple Choice Functionality
         function checkAnswer(element, isCorrect) {
             const responses = element.parentNode.querySelectorAll('.response');
             
-            // Disable all responses
             responses.forEach(response => {
                 response.disabled = true;
                 response.style.pointerEvents = 'none';
@@ -1067,17 +786,14 @@
             });
         }
 
-        // Flashcard Functionality
         function flipCard(card) {
             card.classList.toggle('flipped');
             
-            // Add some visual feedback
             if (card.classList.contains('flipped')) {
                 createSparkles(card);
             }
         }
 
-        // Handle keyboard navigation for flashcards
         function handleCardKeydown(event, card) {
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
@@ -1085,7 +801,6 @@
             }
         }
 
-        // Matching Game Functionality
         let selectedMatch = null;
         let matchedPairs = 0;
         const totalPairs = 6;
@@ -1094,13 +809,11 @@
             if (element.classList.contains('matched')) return;
 
             if (selectedMatch === null) {
-                // First selection
                 selectedMatch = { element, matchId };
                 element.classList.add('selected');
                 updateMatchResult('Item selected. Now choose its match.');
             } else {
                 if (selectedMatch.element === element) {
-                    // Deselect if clicking the same element
                     selectedMatch.element.classList.remove('selected');
                     selectedMatch = null;
                     updateMatchResult('Selection cleared. Choose an item to match.');
@@ -1108,14 +821,12 @@
                 }
 
                 if (selectedMatch.matchId === matchId) {
-                    // Correct match
                     selectedMatch.element.classList.remove('selected');
                     selectedMatch.element.classList.add('matched');
                     element.classList.add('matched');
                     
                     matchedPairs++;
                     
-                    // Create celebration effect
                     createCelebration(element);
                     createCelebration(selectedMatch.element);
                     
@@ -1126,7 +837,6 @@
                         updateMatchResult(`✓ Correct match! (${matchedPairs}/${totalPairs} completed)`);
                     }
                 } else {
-                    // Incorrect match
                     element.classList.add('selected');
                     updateMatchResult('✗ Not a match. Try again!');
                     
@@ -1145,7 +855,6 @@
             resultElement.textContent = message;
         }
 
-        // Visual Effects
         function createCelebration(element) {
             const rect = element.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
@@ -1195,7 +904,6 @@
             }
         }
 
-        // Continuous Glitter Animation
         function createGlitter() {
             const glitter = document.createElement('div');
             glitter.className = 'glitter';
@@ -1217,7 +925,6 @@
             }, 5000);
         }
 
-        // Mouse Trail Effect
         let mouseTrailEnabled = true;
 
         function createMouseTrail(e) {
@@ -1242,22 +949,17 @@
             }, 1000);
         }
 
-        // Smooth scrolling for navigation
         function smoothScroll(target) {
             document.querySelector(target).scrollIntoView({
                 behavior: 'smooth'
             });
         }
 
-        // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Start glitter animation
             setInterval(createGlitter, 500);
             
-            // Add mouse trail
             document.addEventListener('mousemove', createMouseTrail);
             
-            // Add smooth scrolling to navigation links
             document.querySelectorAll('nav a[href^="#"]').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1265,7 +967,6 @@
                 });
             });
             
-            // Add keyboard navigation for responses
             document.querySelectorAll('.response').forEach(response => {
                 response.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -1275,22 +976,17 @@
                 });
             });
             
-            // Initialize match game message
             updateMatchResult('Choose an item to match.');
             
             console.log('🎨 Art History Study Guide loaded successfully!');
         });
 
-        // Performance optimization: Reduce effects on slower devices
         if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
             mouseTrailEnabled = false;
         }
 
-        // Accessibility: Respect user's motion preferences
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             mouseTrailEnabled = false;
-            // Reduce glitter frequency
-            setInterval(createGlitter, 2000);
         }
     </script>
 </body>
